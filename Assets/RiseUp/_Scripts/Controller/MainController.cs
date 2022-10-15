@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
 using Superpow;
+using AdmobAds;
 
 public class MainController : BaseController {
     
@@ -248,7 +249,7 @@ public class MainController : BaseController {
     {
         if (currentLevel >= 2)
         {
-            if (Application.isEditor || AdmobController.instance.rewardedAd.IsLoaded())
+            if (Application.isEditor /*|| AdsManager.Instance.isRewardVideoLoaded()*/)
             {
                 gameState = GameState.PAUSED;
                 continueFrame.ShowContinueFrame();

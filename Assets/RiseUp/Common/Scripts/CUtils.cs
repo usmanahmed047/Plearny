@@ -13,6 +13,7 @@ using System.Reflection;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
+using AdmobAds;
 
 public class CUtils
 {
@@ -521,10 +522,10 @@ public class CUtils
         if (IsActionAvailable("show_ads", ConfigController.Config.adPeriod))
         {
 #if UNITY_ANDROID || UNITY_IPHONE
-            if (!AdmobController.instance.ShowInterstitial())
+            /*if (!AdsManager.Instance.isInterstitialLoaded())
             {
-                AdmobController.instance.RequestInterstitial();
-            }
+                AdsManager.Instance.RequestAndLoadInterstitialAd();
+            }*/
 #endif
         }
     }
@@ -534,14 +535,14 @@ public class CUtils
         if (IsAdsRemoved()) return;
 
 #if UNITY_ANDROID || UNITY_IPHONE
-        AdmobController.instance.ShowBanner();
+        //AdsManager.Instance.ShowBannerAd(true);
 #endif
     }
 
     public static void CloseBannerAd()
     {
 #if UNITY_ANDROID || UNITY_IPHONE
-        AdmobController.instance.DestroyBanner();
+        //AdsManager.Instance.DestroyBannerAd();
 #endif
     }
 

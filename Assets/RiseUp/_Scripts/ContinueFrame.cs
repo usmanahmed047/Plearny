@@ -1,4 +1,4 @@
-﻿using GoogleMobileAds.Api;
+﻿//using GoogleMobileAds.Api;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -40,9 +40,9 @@ public class ContinueFrame : MonoBehaviour {
 #if UNITY_EDITOR
         HandleRewardBasedVideoRewarded();
 #else
-        AdmobController.onUserEarnedReward = HandleRewardBasedVideoRewarded;
+        /*AdmobController.onUserEarnedReward = HandleRewardBasedVideoRewarded;
         AdmobController.onRewardedAdClosed = HandleRewardBasedVideoClosed;
-        AdmobController.instance.ShowRewardedAd();
+        AdmobController.instance.ShowRewardedAd();*/
 #endif
         Sound.instance.PlayButton();
     }
