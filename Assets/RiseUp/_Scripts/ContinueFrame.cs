@@ -1,4 +1,5 @@
 ﻿//using GoogleMobileAds.Api;
+using AdmobAds;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,6 +14,7 @@ public class ContinueFrame : MonoBehaviour {
     private double startTime;
     public GameObject content;
     private bool rewardSuccess = false;
+    public bool rewardClick = false;
 
     public void HandleRewardBasedVideoClosed()
     {
@@ -36,13 +38,11 @@ public class ContinueFrame : MonoBehaviour {
         timeRunning = false;
         content.SetActive(false);
         rewardSuccess = false;
-
+        rewardClick = true;
 #if UNITY_EDITOR
         HandleRewardBasedVideoRewarded();
 #else
-        /*AdmobController.onUserEarnedReward = HandleRewardBasedVideoRewarded;
-        AdmobController.onRewardedAdClosed = HandleRewardBasedVideoClosed;
-        AdmobController.instance.ShowRewardedAd();*/
+        AdsManager.Instance.ShowRewardedAd();
 #endif
         Sound.instance.PlayButton();
     }

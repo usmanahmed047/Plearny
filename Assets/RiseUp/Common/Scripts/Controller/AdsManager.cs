@@ -1,5 +1,5 @@
-﻿/*using GoogleMobileAds.Api;
-using GoogleMobileAds.Common;*/
+﻿using GoogleMobileAds.Api;
+using GoogleMobileAds.Common;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,7 +9,7 @@ namespace AdmobAds
 {
     public class AdsManager : MonoBehaviour
     {
-        /*public static AdsManager Instance;
+        public static AdsManager Instance;
 
         private readonly TimeSpan APPOPEN_TIMEOUT = TimeSpan.FromHours(4);
         private DateTime appOpenExpireTime;
@@ -46,8 +46,8 @@ namespace AdmobAds
                 Destroy(this);
             }
         }
-        *//*public Text fpsMeter;
-        public Text statusText;*//*
+        /*public Text fpsMeter;
+        public Text statusText;*/
 
 
         #region UNITY MONOBEHAVIOR METHODS
@@ -69,7 +69,7 @@ namespace AdmobAds
                 new RequestConfiguration.Builder()
                 .SetSameAppKeyEnabled(true)
                 //.SetTagForChildDirectedTreatment(TagForChildDirectedTreatment.Unspecified)
-                *//*.SetTestDeviceIds(deviceIds)*//*.build();
+                /*.SetTestDeviceIds(deviceIds)*/.build();
             MobileAds.SetRequestConfiguration(requestConfiguration);
 
             // Initialize the Google Mobile Ads SDK.
@@ -253,6 +253,11 @@ namespace AdmobAds
             {
                 PrintStatus("Interstitial ad closed.");
                 RequestAndLoadInterstitialAd();
+                if (AdsCounter.Instance.timerAd)
+                {
+                    AdsCounter.Instance.InitializeAdsResetTime();
+                    Time.timeScale = 0;
+                }
                 OnAdClosedEvent.Invoke();
             };
             interstitialAd.OnAdDidRecordImpression += (sender, args) =>
@@ -347,14 +352,25 @@ namespace AdmobAds
             {
                 PrintStatus("Reward ad closed.");
                 RequestAndLoadRewardedAd();
+                /*if (AdsCounter.Instance.timerAd)
+                {
+                    Time.timeScale = 0;
+                    GrantRewardToPlayer();
+                    AdsCounter.Instance.InitializeAdsResetTime();
+                }*/
                 OnAdClosedEvent.Invoke();
             };
             rewardedAd.OnUserEarnedReward += (sender, args) =>
             {
                 PrintStatus("User earned Reward ad reward: " + args.Amount);
                 RequestAndLoadRewardedAd();
-                *//*if (!AdsCounter.Instance.isIdle)*//*
+                if (!AdsCounter.Instance.isIdle)
                     GrantRewardToPlayer();
+                if (MainController.instance.continueFrame.rewardClick)
+                {
+                    MainController.instance.continueFrame.rewardClick = false;
+                    MainController.instance.continueFrame.HandleRewardBasedVideoRewarded();
+                }
                 OnUserEarnedRewardEvent.Invoke();
             };
             rewardedAd.OnAdDidRecordImpression += (sender, args) =>
@@ -627,11 +643,16 @@ namespace AdmobAds
             // Reward Granted
             PrintStatus("Reward Granted");
             PlayerPrefs.SetInt("Cash", PlayerPrefs.GetInt("Cash", 0) + 5);
+            if (AdsCounter.Instance.timerAd)
+            {
+                Time.timeScale = 0;
+                AdsCounter.Instance.InitializeAdsResetTime();
+            }
 
         }
 
 
-        #endregion*/
+        #endregion
 
     }
 }
