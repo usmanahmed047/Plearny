@@ -1,19 +1,17 @@
-﻿using System.Collections;
+﻿//using Superpow;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
 using System.Linq;
-using Superpow;
-using AdmobAds;
+using UnityEngine;
 
-public class MainController : BaseController {
-    
+public class MainController : BaseController
+{
+
     public Transform backRegion, spawnRegion;
     public BackItem backPrefab;
     public List<GroupObstacle> obstaclePrefabs;
     private int colorIndex = 0, backCount = 0;
     private BackItem lastBack = null;
-    public enum GameState {START, LOADED, PLAYING, GAME_OVER, COMPLETED, GUIDE, SHOP, PAUSED};
+    public enum GameState { START, LOADED, PLAYING, GAME_OVER, COMPLETED, GUIDE, SHOP, PAUSED };
     public static GameState gameState = GameState.START, lastState = GameState.START;
     public GameObject startFrame, guideFrame, shopFrame, gameTitle;
     public Protection protection;
@@ -26,7 +24,7 @@ public class MainController : BaseController {
     private int savedObstacleIndex, lastObstacleIndex;
 
     public Animator flash;
-    
+
     private List<BackItem> backs = new List<BackItem>();
 
     protected override void Awake()
@@ -50,7 +48,7 @@ public class MainController : BaseController {
 
     private void SetupBackground()
     {
-        lastBack = SpawnNewBackground(Vector3.zero);        
+        lastBack = SpawnNewBackground(Vector3.zero);
         lastBack.SetUp(0, 5, true, true, 0);
         backs.Add(lastBack);
         colorIndex = Random.Range(1, 5);
@@ -60,7 +58,7 @@ public class MainController : BaseController {
             Vector3 pos = new Vector3(0, lastBack.rect.anchoredPosition.y + (i == 0 ? canvasHeight : Const.BACK_HEIGHT));
             lastBack = SpawnNewBackground(pos);
             lastBack.SetUp(colorIndex, colorIndex, i == 0, false, 1);
-            backs.Add(lastBack);            
+            backs.Add(lastBack);
         }
     }
 
@@ -81,7 +79,7 @@ public class MainController : BaseController {
     public void OnPassLevel()
     {
         passedLevel++;
-        if(!IsClassicMode() && passedLevel == challengeController.listObstacles.Count)
+        if (!IsClassicMode() && passedLevel == challengeController.listObstacles.Count)
         {
             //level completed
             SetState(GameState.COMPLETED);
@@ -111,7 +109,7 @@ public class MainController : BaseController {
         back.rect.anchoredPosition = new Vector3(0, lastBack.rect.anchoredPosition.y + Const.BACK_HEIGHT - 10);
         lastBack = back;
         int lastIndex = colorIndex;
-        if(backCount == 0)
+        if (backCount == 0)
         {
             spawnLevel++;
             if (IsClassicMode())
@@ -328,7 +326,7 @@ public class MainController : BaseController {
         List<Transform> children = CUtils.GetChildren(spawnRegion);
         foreach (Transform child in children)
         {
-            if(child.tag =="Obstacle")
+            if (child.tag == "Obstacle")
             {
                 child.GetComponent<Rigidbody2D>().drag = child.GetComponent<Rigidbody2D>().drag * 10;
                 child.GetComponent<Rigidbody2D>().angularDrag = child.GetComponent<Rigidbody2D>().angularDrag * 10;
@@ -339,7 +337,7 @@ public class MainController : BaseController {
     private void ClearObstacle()
     {
         List<Transform> children = CUtils.GetChildren(spawnRegion);
-        foreach(Transform child in children)
+        foreach (Transform child in children)
         {
             Destroy(child.gameObject);
         }
@@ -355,11 +353,11 @@ public class MainController : BaseController {
         {
             Vector3 pos = new Vector3(0, backs[i - 1].rect.anchoredPosition.y + (i == 1 ? canvasHeight : Const.BACK_HEIGHT));
             backs[i].rect.anchoredPosition3D = pos;
-            backs[i].SetUp(colorIndex, colorIndex, i == 1, false, startLevel);            
+            backs[i].SetUp(colorIndex, colorIndex, i == 1, false, startLevel);
             backs[i].transform.SetAsLastSibling();
             lastBack = backs[i];
         }
-        backCount = 0;        
+        backCount = 0;
     }
 
     double lastTime = 0;
