@@ -252,12 +252,12 @@ namespace AdmobAds
             interstitialAd.OnAdClosed += (sender, args) =>
             {
                 PrintStatus("Interstitial ad closed.");
-                RequestAndLoadInterstitialAd();
                 if (AdsCounter.Instance.timerAd)
                 {
-                    AdsCounter.Instance.InitializeAdsResetTime();
                     Time.timeScale = 0;
+                    AdsCounter.Instance.InitializeAdsResetTime();
                 }
+                RequestAndLoadInterstitialAd();
                 OnAdClosedEvent.Invoke();
             };
             interstitialAd.OnAdDidRecordImpression += (sender, args) =>

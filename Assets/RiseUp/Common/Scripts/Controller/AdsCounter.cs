@@ -39,7 +39,6 @@ public class AdsCounter : MonoBehaviour
         adRunning = false;
         timerAd = false;
         UnLoadTimer();
-        //ShowPauseFrame(false);
     }
 
     private void InitializeTimeOutTime()
@@ -144,21 +143,34 @@ public class AdsCounter : MonoBehaviour
             else
             {
                 timerAd = true;
-                AdsManager.Instance.ShowInterstitialAd();
+                //AdsManager.Instance.ShowInterstitialAd();
+                AdsManager.Instance.ShowRewardedAd();
                 adRunning = true;
             }
         }
-        else if (AdsManager.Instance.isRewardVideoLoaded())
+        else if(Random.Range(0, 2) == 0)
         {
-            timerAd = true;
-            AdsManager.Instance.ShowRewardedAd();
-            adRunning = true;
+            if (AdsManager.Instance.isRewardVideoLoaded())
+            {
+                timerAd = true;
+                AdsManager.Instance.ShowRewardedAd();
+                adRunning = true;
+            }
         }
-        else if (AdsManager.Instance.isInterstitialLoaded())
+        else
         {
-            timerAd = true;
-            AdsManager.Instance.ShowInterstitialAd();
-            adRunning = true;
+            /*if (AdsManager.Instance.isInterstitialLoaded())
+            {
+                timerAd = true;
+                AdsManager.Instance.ShowInterstitialAd();
+                adRunning = true;
+            }*/
+            if (AdsManager.Instance.isRewardVideoLoaded())
+            {
+                timerAd = true;
+                AdsManager.Instance.ShowRewardedAd();
+                adRunning = true;
+            }
         }
         Time.timeScale = 0;
     }
